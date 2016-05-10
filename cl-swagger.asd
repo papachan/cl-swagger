@@ -1,4 +1,4 @@
-(asdf:defsystem #:cl-swagger
+(defsystem :cl-swagger
   :description "parsing a swagger file"
   :author "Dan Loaiza <papachan@gmail.com>"
   :license "MIT"
