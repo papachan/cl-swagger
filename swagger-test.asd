@@ -3,8 +3,9 @@
   :license "MIT"
   :depends-on (:cl-swagger
                :fiveam)
-  :pathname "t"
-  :serial t
-  :components ((:file "package-test")
-               (:file "swagger-test"))
+  :components ((:module "t"
+                :serial t
+                :components
+                ((:file "package-test")
+                 (:file "swagger-test"))))
   :description "")

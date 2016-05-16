@@ -2,16 +2,21 @@
 (asdf:oos 'asdf:load-op :fiveam)
 
 (defpackage swagger-test
-  (:use :cl :fiveam))
-
+  (:use :cl :fiveam :swagger)
+  (:export :run-tests))
 (in-package #:swagger-test)
 
-(def-suite swagger)
-(in-suite swagger)
+
+(def-suite tests)
+(in-suite tests)
 
 (test parse-test
-  (is (equal 2 2)))
+  "a simple test with a method from swagger package"
+  (is (equal t (swagger::post-through-url "http://google.com/"))))
 
 (defun run-tests ()
-  (run! 'swagger))
+  (5am:run! 'tests))
+
+
+(run-tests)
 
