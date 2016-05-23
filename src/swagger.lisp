@@ -4,12 +4,7 @@
 
 (in-package #:swagger)
 
-(defparameter *default-yaml-file* "../swagger-demo.yaml")
-
-(defun parse-paths(h)
-  (loop for key being the hash-keys in h
-     using (hash-value val)
-     collect (list key val)))
+(defparameter *default-yaml-file* "./swagger-demo.yaml")
 
 (defun post-through-url (url)
   (let ((drakma:*header-stream* *standard-output*))
@@ -17,10 +12,19 @@
         (drakma:http-request url)
       (eql 200 status-code))))
 
+(defun show-path ()
+  (let ((url "http://localhost:~A/"))
+    (print (concatenate 'string
+                        (format nil url host) path))))
+
+(defun parse-paths (v)
+  (loop for value being the hash-values of v
+     using (hash-key key)
+     do (setf host key)))
+
 (defun start-parser (filename)
   "A file parse function"
-  (let ((hash (cl-yy::yaml-load-file filename))
-        (paths))
+  (let ((hash (cl-yy::yaml-load-file filename)))
     (loop for key being the hash-keys of hash
        using (hash-value value)
        do
@@ -30,20 +34,11 @@
            ((string= key "host")
             (setf host value))
            ((string= key "paths")
-            (loop for value being the hash-values of value
-               using (hash-key key)
-               do (setf path key))))))
-  (print (concatenate 'string
-                      (format nil "http://localhost:~A" host) path)))
+            (let ((hpath value))
+              (parse-paths hpath)))))
+    (show-path)))
 
 (defun start ()
   "My program start here"
   (if (probe-file *default-yaml-file*)
       (start-parser *default-yaml-file*)))
-
-
-
-
-
-
-
