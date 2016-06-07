@@ -1,10 +1,21 @@
 ;;;; -*- Mode: Lisp; Syntax: Common-Lisp -*-
 (defpackage :swagger
-  (:use :cl :cl-yaclyaml :drakma :yason))
+  (:use :cl :cl-yaclyaml :drakma :yason :cl-fad))
 
-(in-package #:swagger)
+(in-package :swagger)
 
-(defparameter *default-yaml-file* "./swagger-demo.yaml")
+(defvar path nil)
+(defvar host nil)
+
+(defparameter *system-directory*
+  (make-pathname
+   :directory
+   (pathname-directory
+    (truename
+     (asdf:system-source-file :cl-swagger)))))
+
+(defparameter *default-yaml-file*
+  (cl-fad:merge-pathnames-as-file *system-directory*  #P"swagger-demo.yaml"))
 
 (defun post-through-url (url)
   (let ((drakma:*header-stream* *standard-output*))
@@ -42,3 +53,5 @@
   "My program start here"
   (if (probe-file *default-yaml-file*)
       (start-parser *default-yaml-file*)))
+
+
