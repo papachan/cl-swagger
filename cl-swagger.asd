@@ -4,7 +4,8 @@
   :license "MIT"
   :depends-on (:yason
                :drakma
-               :cl-yaclyaml)
+               :cl-yaclyaml
+               :cl-fad)
   :components ((:module "src"
                 :serial t
                 :components
